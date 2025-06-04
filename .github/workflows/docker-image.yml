@@ -5,6 +5,8 @@ on:
     workflows: ["Infrastructure Deployment"]
     types:
       - completed
+# Include botton run
+  workflow_dispatch:
 
 jobs:
   build-and-push:
