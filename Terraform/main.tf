@@ -110,6 +110,7 @@ resource "aws_ecr_repository" "webapp" {
   name = "my-webapp-image"
 }
 
+# Amazon ECR Container Registry
 resource "aws_ecr_repository" "mysql" {
   name = "my-mysql-image"
 }
