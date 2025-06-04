@@ -4,8 +4,6 @@ on:
   workflow_dispatch:
   push:
     branches: [ dev, main ]
-    paths:
-      - 'Terraform/**'
 
 permissions:
   contents: read
