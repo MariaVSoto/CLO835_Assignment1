@@ -8,12 +8,22 @@ on:
 
 jobs:
   build-and-push:
+    if: ${{ github.event.workflow_run.head_branch == 'dev' || github.event.workflow_run.head_branch == 'main' }}
     runs-on: ubuntu-latest
     environment: ${{ github.ref == 'refs/heads/main' && 'main' || 'dev' }}
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+
+      - name: Check for changes in .github
+        run: |
+          if git diff --name-only ${{ github.event.workflow_run.head_sha }}${{ github.event.workflow_run.head_sha }} | grep -q '^.github/'; then
+            echo "Changes detected in .github"
+          else
+            echo "No changes in .github, skipping workflow."
+            exit 0
+          fi
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
