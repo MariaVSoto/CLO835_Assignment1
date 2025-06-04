@@ -31,7 +31,6 @@ data "aws_ami" "latest_amazon_linux" {
   }
 }
 
-
 # Data source for availability zones in us-east-1
 data "aws_availability_zones" "available" {
   state = "available"
@@ -47,7 +46,7 @@ data "aws_vpc" "default" {
 resource "aws_instance" "Web_VM" {
   ami                         = data.aws_ami.latest_amazon_linux.id
   instance_type               = var.instance_type
-  key_name                    = aws_key_pair.my_key.key_name
+  key_name                    = var.key_name
   vpc_security_group_ids      = [aws_security_group.web_sg.id]
   associate_public_ip_address = false
 
@@ -58,12 +57,6 @@ resource "aws_instance" "Web_VM" {
   )
 }
 
-
-# Adding SSH key to Amazon EC2
-resource "aws_key_pair" "my_key" {
-  key_name   = local.name_prefix
-  public_key = file("${local.name_prefix}.pub")
-}
 
 # Security Group
 resource "aws_security_group" "web_sg" {
@@ -110,4 +103,12 @@ resource "aws_eip" "static_eip" {
       "Name" = "${local.name_prefix}-eip"
     }
   )
+}
+
+resource "aws_ecr_repository" "webapp" {
+  name = "my-webapp-image"
+}
+
+resource "aws_ecr_repository" "mysql" {
+  name = "my-mysql-image"
 }
