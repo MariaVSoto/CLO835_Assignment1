@@ -105,6 +105,7 @@ resource "aws_eip" "static_eip" {
   )
 }
 
+# Amazon ECR Container Registry
 resource "aws_ecr_repository" "webapp" {
   name = "my-webapp-image"
 }
