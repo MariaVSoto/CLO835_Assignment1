@@ -4,6 +4,7 @@ variable "instance_type" {
   description = "Type of the instance"
 }
 
+# KeyName
 variable "key_name" {
   description = "Name of the EC2 Key Pair to allow SSH access"
   type        = string
