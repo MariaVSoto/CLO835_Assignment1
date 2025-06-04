@@ -46,7 +46,4 @@ jobs:
         run: terraform plan -input=false -no-color -out=tf.plan
 
       - name: Terraform Apply
-        if: |
-          (github.ref == 'refs/heads/dev' && inputs.environment == 'dev') ||
-          (github.ref == 'refs/heads/main' && inputs.environment == 'main')
         run: terraform apply -input=false -auto-approve tf.plan
