@@ -5,12 +5,18 @@ on:
     workflows: ["Infrastructure Deployment"]
     types:
       - completed
-# Include botton run
   workflow_dispatch:
+  push:
+    branches: [ dev, main ]
+    paths:
+      - '.github/workflows/**'
 
 jobs:
   build-and-push:
-    if: ${{ github.event.workflow_run.head_branch == 'dev' || github.event.workflow_run.head_branch == 'main' }}
+    if: |
+      github.event_name == 'workflow_dispatch' ||
+      github.event_name == 'push' ||
+      (github.event_name == 'workflow_run' && (github.event.workflow_run.head_branch == 'dev' || github.event.workflow_run.head_branch == 'main'))
     runs-on: ubuntu-latest
     environment: ${{ github.ref == 'refs/heads/main' && 'main' || 'dev' }}
 
@@ -19,11 +25,12 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Check for changes in .github
+        if: github.event_name == 'push'
         run: |
-          if git diff --name-only ${{ github.event.workflow_run.head_sha }}${{ github.event.workflow_run.head_sha }} | grep -q '^.github/'; then
-            echo "Changes detected in .github"
+          if git diff --name-only ${{ github.event.before }} ${{ github.event.after }} | grep -q '^.github/workflows/'; then
+            echo "Changes detected in .github/workflows"
           else
-            echo "No changes in .github, skipping workflow."
+            echo "No changes in .github/workflows, skipping workflow."
             exit 0
           fi
 
