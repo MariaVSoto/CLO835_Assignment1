@@ -2,14 +2,6 @@ name: Infrastructure Deployment
 
 on:
   workflow_dispatch:
-    inputs:
-      environment:
-        required: true
-        default: 'dev'
-        type: choice
-        options:
-          - dev
-          - main
   push:
     branches: [ dev, main ]
     paths:
