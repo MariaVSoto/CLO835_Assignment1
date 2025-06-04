@@ -48,7 +48,18 @@ resource "aws_instance" "Web_VM" {
   instance_type               = var.instance_type
   key_name                    = var.key_name
   vpc_security_group_ids      = [aws_security_group.web_sg.id]
-  associate_public_ip_address = false
+  associate_public_ip_address = true
+
+  iam_instance_profile        = "LabInstanceProfile"
+
+  user_data = <<-EOF
+    #!/bin/bash
+    yum update -y
+    amazon-linux-extras install docker -y
+    service docker start
+    usermod -a -G docker ec2-user
+    reboot
+  EOF
 
   tags = merge(local.default_tags,
     {
@@ -75,7 +86,7 @@ resource "aws_security_group" "web_sg" {
 
   ingress {
     from_port   = 8080
-    to_port     = 8080
+    to_port     = 8083
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
