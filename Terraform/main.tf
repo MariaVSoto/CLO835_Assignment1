@@ -52,14 +52,6 @@ resource "aws_instance" "Web_VM" {
 
   iam_instance_profile        = "LabInstanceProfile"
 
-  user_data = <<-EOF
-    #!/bin/bash
-    yum update -y
-    amazon-linux-extras install docker -y
-    service docker start
-    usermod -a -G docker ec2-user
-    reboot
-  EOF
 
   tags = merge(local.default_tags,
     {
