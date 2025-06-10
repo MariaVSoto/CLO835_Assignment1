@@ -30,7 +30,7 @@ jobs:
       # Build and push MySQL image
       - name: Build and push MySQL image
         env:
-          ECR_REGISTRY: 
+          ECR_REGISTRY: 396561719560.dkr.ecr.us-east-1.amazonaws.com
           ECR_REPOSITORY: my-mysql-image
           IMAGE_TAG: latest
         run: |
@@ -40,7 +40,7 @@ jobs:
       # Build and push Webapp image
       - name: Build and push Webapp image
         env:
-          ECR_REGISTRY: 
+          ECR_REGISTRY: 396561719560.dkr.ecr.us-east-1.amazonaws.com
           ECR_REPOSITORY: my-webapp-image
           IMAGE_TAG: latest
         run: |
